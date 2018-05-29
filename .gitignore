@@ -34,3 +34,7 @@ docs/source/_static/three.js
 docs/source/examples/img
 
 js/lab-dist
+
+# pythreejs-java
+pythreejs-java/build
+pythreejs-java/.gradle
