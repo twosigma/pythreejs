@@ -13,9 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
 package pythreejs;
 
-public enum ShadowTypes {
-    PCFShadowMap
+public class DataWidget extends ThreeWidget{
 }

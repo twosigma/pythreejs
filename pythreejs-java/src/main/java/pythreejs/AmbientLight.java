@@ -1,13 +1,11 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
 import java.util.*;
-import com.twosigma.beakerx.widget.*;
 
 public class AmbientLight extends Light {
-
-
 
   public static final String MODEL_NAME_VALUE = "AmbientLightModel";
   public static final String TYPE = "type";
@@ -19,20 +17,21 @@ public class AmbientLight extends Light {
     openComm();
   }
 
+    public AmbientLight(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.type = (String) parameters.getOrDefault(TYPE, (Serializable) this.type);
+      openComm();
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
-    content.put(TYPE, type);
+    content.put(TYPE, (Serializable) type);
     return content;
   }
 
   public String getModelNameValue(){
     return MODEL_NAME_VALUE;
-  }
-
-  @Override
-  public String getViewNameValue() {
-    return null;
   }
 
   public String getType() {

@@ -1,40 +1,48 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
 import java.util.*;
 
 public class Mesh extends Object3D {
 
   public static final String MODEL_NAME_VALUE = "MeshModel";
-  private static final String IPY_MODEL = "IPY_MODEL_";
   public static final String DRAWMODE = "drawMode";
   public static final String GEOMETRY = "geometry";
   public static final String MATERIAL = "material";
   public static final String MORPHTARGETINFLUENCES = "morphTargetInfluences";
   public static final String TYPE = "type";
 
-  private String drawMode = "TrianglesDrawMode";
-  private BaseGeometry geometry = null;
-  private Material material = null;
+  private Object drawMode = "TrianglesDrawMode";
+  private Widget geometry = new Geometry();
+  private Widget material = new Material();
   private List morphTargetInfluences = new ArrayList<>();
   private String type = "Mesh";
 
-  public Mesh(BaseGeometry geometry, Material material) {
+  public Mesh() {
     super();
-    this.geometry = geometry;
-    this.material = material;
     openComm();
   }
 
+    public Mesh(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.drawMode = (Object) parameters.getOrDefault(DRAWMODE, (Serializable) this.drawMode);
+      this.geometry = (Widget) parameters.getOrDefault(GEOMETRY, (Serializable) this.geometry);
+      this.material = (Widget) parameters.getOrDefault(MATERIAL, (Serializable) this.material);
+      this.morphTargetInfluences = (List) parameters.getOrDefault(MORPHTARGETINFLUENCES, (Serializable) this.morphTargetInfluences);
+      this.type = (String) parameters.getOrDefault(TYPE, (Serializable) this.type);
+      openComm();
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
-    content.put(DRAWMODE, drawMode);
-    content.put(GEOMETRY, IPY_MODEL + this.geometry.getComm().getCommId());
-    content.put(MATERIAL, IPY_MODEL + this.material.getComm().getCommId());
+    content.put(DRAWMODE, (Serializable) drawMode);
+    content.put(GEOMETRY, geometry == null ? null : "IPY_MODEL_" + geometry.getComm().getCommId());
+    content.put(MATERIAL, material == null ? null : "IPY_MODEL_" + material.getComm().getCommId());
     content.put(MORPHTARGETINFLUENCES, (Serializable) morphTargetInfluences);
-    content.put(TYPE, type);
+    content.put(TYPE, (Serializable) type);
     return content;
   }
 
@@ -42,33 +50,28 @@ public class Mesh extends Object3D {
     return MODEL_NAME_VALUE;
   }
 
-  @Override
-  public String getViewNameValue() {
-    return null;
-  }
-
   public Object getDrawMode() {
     return drawMode;
   }
-  public void setDrawMode(String drawMode){
+  public void setDrawMode(Object drawMode){
     this.drawMode = drawMode;
     sendUpdate(DRAWMODE, drawMode);
   }
 
-  public BaseGeometry getGeometry() {
+  public Widget getGeometry() {
     return geometry;
   }
   public void setGeometry(BaseGeometry geometry){
     this.geometry = geometry;
-    sendUpdate(GEOMETRY, IPY_MODEL + this.geometry.getComm().getCommId());
+    sendUpdate(GEOMETRY, geometry == null ? null : "IPY_MODEL_"+geometry.getComm().getCommId());
   }
 
-  public Material getMaterial() {
+  public Widget getMaterial() {
     return material;
   }
   public void setMaterial(Material material){
     this.material = material;
-    sendUpdate(MATERIAL, IPY_MODEL + this.material.getComm().getCommId());
+    sendUpdate(MATERIAL, material == null ? null : "IPY_MODEL_"+material.getComm().getCommId());
   }
 
   public List getMorphTargetInfluences() {

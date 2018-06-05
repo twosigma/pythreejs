@@ -1,13 +1,12 @@
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
 import java.util.*;
 
-public abstract class Object3DBase extends ThreeWidget {
+public class Object3DBase extends ThreeWidget {
 
   public static final String MODEL_NAME_VALUE = "Object3DModel";
-  private static final String IPY_MODEL = "IPY_MODEL_";
   public static final String CASTSHADOW = "castShadow";
   public static final String CHILDREN = "children";
   public static final String FRUSTUMCULLED = "frustumCulled";
@@ -28,53 +27,75 @@ public abstract class Object3DBase extends ThreeWidget {
   public static final String UP = "up";
   public static final String VISIBLE = "visible";
 
-
-  private Boolean castShadow = null;
+  private boolean castShadow;
   private List<Object3DBase> children = new ArrayList<>();
-  private Boolean frustumCulled = true;
+  private boolean frustumCulled = true;
   private List matrix = Arrays.asList(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-  private Boolean matrixAutoUpdate = true;
+  private boolean matrixAutoUpdate = true;
   private List matrixWorld = Arrays.asList(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-  private Boolean matrixWorldNeedsUpdate = null;
+  private boolean matrixWorldNeedsUpdate;
   private List modelViewMatrix = Arrays.asList(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-  private String name = null;
+  private String name;
   private List normalMatrix = Arrays.asList(1, 0, 0, 0, 1, 0, 0, 0, 1);
   private List position = Arrays.asList(0, 0, 0);
   private List quaternion = Arrays.asList(0, 0, 0, 1);
-  private Boolean receiveShadow = null;
-  private Integer renderOrder = null;;
+  private boolean receiveShadow;
+  private int renderOrder;
   private List rotation = Arrays.asList(0, 0, 0, "XYZ");
   private List scale = Arrays.asList(1, 1, 1);
   private String type = "Object3D";
   private List up = Arrays.asList(0, 1, 0);
-  private Boolean visible = true;
+  private boolean visible = true;
 
   public Object3DBase() {
     super();
   }
 
+  public Object3DBase(LinkedHashMap parameters) {
+    super(parameters);
+    this.castShadow = (boolean) parameters.getOrDefault(CASTSHADOW, this.castShadow);
+    this.children = (List<Object3DBase>) parameters.getOrDefault(CHILDREN, this.children);
+    this.frustumCulled = (boolean) parameters.getOrDefault(FRUSTUMCULLED, (Serializable) this.frustumCulled);
+    this.matrix = (List) parameters.getOrDefault(MATRIX, (Serializable) this.matrix);
+    this.matrixAutoUpdate = (boolean) parameters.getOrDefault(MATRIXAUTOUPDATE, (Serializable) this.matrixAutoUpdate);
+    this.matrixWorld = (List) parameters.getOrDefault(MATRIXWORLD, (Serializable) this.matrixWorld);
+    this.matrixWorldNeedsUpdate = (boolean) parameters.getOrDefault(MATRIXWORLDNEEDSUPDATE, (Serializable) this.matrixWorldNeedsUpdate);
+    this.modelViewMatrix = (List) parameters.getOrDefault(MODELVIEWMATRIX, (Serializable) this.modelViewMatrix);
+    this.name = (String) parameters.getOrDefault(NAME, (Serializable) this.name);
+    this.normalMatrix = (List) parameters.getOrDefault(NORMALMATRIX, (Serializable) this.normalMatrix);
+    this.position = (List) parameters.getOrDefault(POSITION, (Serializable) this.position);
+    this.quaternion = (List) parameters.getOrDefault(QUATERNION, (Serializable) this.quaternion);
+    this.receiveShadow = (boolean) parameters.getOrDefault(RECEIVESHADOW, (Serializable) this.receiveShadow);
+    this.renderOrder = (int) parameters.getOrDefault(RENDERORDER, (Serializable) this.renderOrder);
+    this.rotation = (List) parameters.getOrDefault(ROTATION, (Serializable) this.rotation);
+    this.scale = (List) parameters.getOrDefault(SCALE, (Serializable) this.scale);
+    this.type = (String) parameters.getOrDefault(TYPE, (Serializable) this.type);
+    this.up = (List) parameters.getOrDefault(UP, (Serializable) this.up);
+    this.visible = (boolean) parameters.getOrDefault(VISIBLE, (Serializable) this.visible);
+  }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
-    content.put(CASTSHADOW, castShadow);
+    content.put(CASTSHADOW, (Serializable) castShadow);
     content.put(CHILDREN, childrenIds());
-    content.put(FRUSTUMCULLED, frustumCulled);
+    content.put(FRUSTUMCULLED, (Serializable) frustumCulled);
     content.put(MATRIX, (Serializable) matrix);
-    content.put(MATRIXAUTOUPDATE, matrixAutoUpdate);
+    content.put(MATRIXAUTOUPDATE, (Serializable) matrixAutoUpdate);
     content.put(MATRIXWORLD, (Serializable) matrixWorld);
-    content.put(MATRIXWORLDNEEDSUPDATE, matrixWorldNeedsUpdate);
+    content.put(MATRIXWORLDNEEDSUPDATE, (Serializable) matrixWorldNeedsUpdate);
     content.put(MODELVIEWMATRIX, (Serializable) modelViewMatrix);
-    content.put(NAME, name);
+    content.put(NAME, (Serializable) name);
     content.put(NORMALMATRIX, (Serializable) normalMatrix);
     content.put(POSITION, (Serializable) position);
     content.put(QUATERNION, (Serializable) quaternion);
-    content.put(RECEIVESHADOW, receiveShadow);
-    content.put(RENDERORDER, renderOrder);
+    content.put(RECEIVESHADOW, (Serializable) receiveShadow);
+    content.put(RENDERORDER, (Serializable) renderOrder);
     content.put(ROTATION, (Serializable) rotation);
     content.put(SCALE, (Serializable) scale);
-    content.put(TYPE, type);
+    content.put(TYPE, (Serializable) type);
     content.put(UP, (Serializable) up);
-    content.put(VISIBLE, visible);
+    content.put(VISIBLE, (Serializable) visible);
     return content;
   }
 
@@ -82,10 +103,10 @@ public abstract class Object3DBase extends ThreeWidget {
     return MODEL_NAME_VALUE;
   }
 
-  public Boolean getCastShadow() {
+  public boolean getCastShadow() {
     return castShadow;
   }
-  public void setCastShadow(Boolean castShadow){
+  public void setCastShadow(boolean castShadow){
     this.castShadow = castShadow;
     sendUpdate(CASTSHADOW, castShadow);
   }
@@ -97,7 +118,7 @@ public abstract class Object3DBase extends ThreeWidget {
   private ArrayList<String> childrenIds() {
     ArrayList<String> childrenIds = new ArrayList<>();
     for (Object3DBase child : children) {
-      childrenIds.add(IPY_MODEL + child.getComm().getCommId());
+      childrenIds.add("IPY_MODEL_" + child.getComm().getCommId());
     }
     return childrenIds;
   }
@@ -107,10 +128,10 @@ public abstract class Object3DBase extends ThreeWidget {
     sendUpdate(CHILDREN, childrenIds());
   }
 
-  public Boolean getFrustumCulled() {
+  public boolean getFrustumCulled() {
     return frustumCulled;
   }
-  public void setFrustumCulled(Boolean frustumCulled){
+  public void setFrustumCulled(boolean frustumCulled){
     this.frustumCulled = frustumCulled;
     sendUpdate(FRUSTUMCULLED, frustumCulled);
   }
@@ -123,10 +144,10 @@ public abstract class Object3DBase extends ThreeWidget {
     sendUpdate(MATRIX, matrix);
   }
 
-  public Boolean getMatrixAutoUpdate() {
+  public boolean getMatrixAutoUpdate() {
     return matrixAutoUpdate;
   }
-  public void setMatrixAutoUpdate(Boolean matrixAutoUpdate){
+  public void setMatrixAutoUpdate(boolean matrixAutoUpdate){
     this.matrixAutoUpdate = matrixAutoUpdate;
     sendUpdate(MATRIXAUTOUPDATE, matrixAutoUpdate);
   }
@@ -139,10 +160,10 @@ public abstract class Object3DBase extends ThreeWidget {
     sendUpdate(MATRIXWORLD, matrixWorld);
   }
 
-  public Boolean getMatrixWorldNeedsUpdate() {
+  public boolean getMatrixWorldNeedsUpdate() {
     return matrixWorldNeedsUpdate;
   }
-  public void setMatrixWorldNeedsUpdate(Boolean matrixWorldNeedsUpdate){
+  public void setMatrixWorldNeedsUpdate(boolean matrixWorldNeedsUpdate){
     this.matrixWorldNeedsUpdate = matrixWorldNeedsUpdate;
     sendUpdate(MATRIXWORLDNEEDSUPDATE, matrixWorldNeedsUpdate);
   }
@@ -187,18 +208,18 @@ public abstract class Object3DBase extends ThreeWidget {
     sendUpdate(QUATERNION, quaternion);
   }
 
-  public Boolean getReceiveShadow() {
+  public boolean getReceiveShadow() {
     return receiveShadow;
   }
-  public void setReceiveShadow(Boolean receiveShadow){
+  public void setReceiveShadow(boolean receiveShadow){
     this.receiveShadow = receiveShadow;
     sendUpdate(RECEIVESHADOW, receiveShadow);
   }
 
-  public Integer getRenderOrder() {
+  public int getRenderOrder() {
     return renderOrder;
   }
-  public void setRenderOrder(Integer renderOrder){
+  public void setRenderOrder(int renderOrder){
     this.renderOrder = renderOrder;
     sendUpdate(RENDERORDER, renderOrder);
   }
@@ -235,10 +256,10 @@ public abstract class Object3DBase extends ThreeWidget {
     sendUpdate(UP, up);
   }
 
-  public Boolean getVisible() {
+  public boolean getVisible() {
     return visible;
   }
-  public void setVisible(Boolean visible){
+  public void setVisible(boolean visible){
     this.visible = visible;
     sendUpdate(VISIBLE, visible);
   }

@@ -1,13 +1,13 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.*;
 
 public class SphereGeometry extends BaseGeometry {
 
   public static final String MODEL_NAME_VALUE = "SphereGeometryModel";
-
   public static final String HEIGHTSEGMENTS = "heightSegments";
   public static final String PHILENGTH = "phiLength";
   public static final String PHISTART = "phiStart";
@@ -17,88 +17,95 @@ public class SphereGeometry extends BaseGeometry {
   public static final String TYPE = "type";
   public static final String WIDTHSEGMENTS = "widthSegments";
 
-  private Integer heightSegments = 6;
-  private Double phiLength = 6.283185307179586;
-  private Double phiStart = 0.0;
-  private Double radius = 1.0;
-  private Double thetaLength = 3.141592653589793;
-  private Double thetaStart = 0.0;
+  private int heightSegments = 6;
+  private double phiLength = 6.283185307179586;
+  private double phiStart = 0;
+  private double radius = 1;
+  private double thetaLength = 3.141592653589793;
+  private double thetaStart = 0;
   private String type = "SphereGeometry";
-  private Integer widthSegments = 8;
+  private int widthSegments = 8;
 
   public SphereGeometry() {
     super();
     openComm();
   }
 
+    public SphereGeometry(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.heightSegments = (int) parameters.getOrDefault(HEIGHTSEGMENTS, (Serializable) this.heightSegments);
+      this.phiLength = (double) parameters.getOrDefault(PHILENGTH, (Serializable) this.phiLength);
+      this.phiStart = (double) parameters.getOrDefault(PHISTART, (Serializable) this.phiStart);
+      this.radius = (double) parameters.getOrDefault(RADIUS, (Serializable) this.radius);
+      this.thetaLength = (double) parameters.getOrDefault(THETALENGTH, (Serializable) this.thetaLength);
+      this.thetaStart = (double) parameters.getOrDefault(THETASTART, (Serializable) this.thetaStart);
+      this.type = (String) parameters.getOrDefault(TYPE, (Serializable) this.type);
+      this.widthSegments = (int) parameters.getOrDefault(WIDTHSEGMENTS, (Serializable) this.widthSegments);
+      openComm();
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
-    content.put(HEIGHTSEGMENTS, heightSegments);
-    content.put(PHILENGTH, phiLength);
-    content.put(PHISTART, phiStart);
-    content.put(RADIUS, radius);
-    content.put(THETALENGTH, thetaLength);
-    content.put(THETASTART, thetaStart);
-    content.put(TYPE, type);
-    content.put(WIDTHSEGMENTS, widthSegments);
+    content.put(HEIGHTSEGMENTS, (Serializable) heightSegments);
+    content.put(PHILENGTH, (Serializable) phiLength);
+    content.put(PHISTART, (Serializable) phiStart);
+    content.put(RADIUS, (Serializable) radius);
+    content.put(THETALENGTH, (Serializable) thetaLength);
+    content.put(THETASTART, (Serializable) thetaStart);
+    content.put(TYPE, (Serializable) type);
+    content.put(WIDTHSEGMENTS, (Serializable) widthSegments);
     return content;
   }
 
-  @Override
   public String getModelNameValue(){
     return MODEL_NAME_VALUE;
   }
 
-  @Override
-  public String getViewNameValue() {
-    return null;
-  }
-
-  public Integer getHeightSegments() {
+  public int getHeightSegments() {
     return heightSegments;
   }
-  public void setHeightSegments(Integer heightSegments){
+  public void setHeightSegments(int heightSegments){
     this.heightSegments = heightSegments;
     sendUpdate(HEIGHTSEGMENTS, heightSegments);
   }
 
-  public Double getPhiLength() {
+  public double getPhiLength() {
     return phiLength;
   }
-  public void setPhiLength(Double phiLength){
+  public void setPhiLength(double phiLength){
     this.phiLength = phiLength;
     sendUpdate(PHILENGTH, phiLength);
   }
 
-  public Double getPhiStart() {
+  public double getPhiStart() {
     return phiStart;
   }
-  public void setPhiStart(Double phiStart){
+  public void setPhiStart(double phiStart){
     this.phiStart = phiStart;
     sendUpdate(PHISTART, phiStart);
   }
 
-  public Double getRadius() {
+  public double getRadius() {
     return radius;
   }
-  public void setRadius(Double radius){
+  public void setRadius(double radius){
     this.radius = radius;
     sendUpdate(RADIUS, radius);
   }
 
-  public Double getThetaLength() {
+  public double getThetaLength() {
     return thetaLength;
   }
-  public void setThetaLength(Double thetaLength){
+  public void setThetaLength(double thetaLength){
     this.thetaLength = thetaLength;
     sendUpdate(THETALENGTH, thetaLength);
   }
 
-  public Double getThetaStart() {
+  public double getThetaStart() {
     return thetaStart;
   }
-  public void setThetaStart(Double thetaStart){
+  public void setThetaStart(double thetaStart){
     this.thetaStart = thetaStart;
     sendUpdate(THETASTART, thetaStart);
   }
@@ -111,10 +118,10 @@ public class SphereGeometry extends BaseGeometry {
     sendUpdate(TYPE, type);
   }
 
-  public Integer getWidthSegments() {
+  public int getWidthSegments() {
     return widthSegments;
   }
-  public void setWidthSegments(Integer widthSegments){
+  public void setWidthSegments(int widthSegments){
     this.widthSegments = widthSegments;
     sendUpdate(WIDTHSEGMENTS, widthSegments);
   }

@@ -1,27 +1,34 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.*;
 
-public abstract class BaseGeometry extends ThreeWidget {
+public class BaseGeometry extends ThreeWidget {
 
   public static final String MODEL_NAME_VALUE = "BaseGeometryModel";
   public static final String NAME = "name";
   public static final String TYPE = "type";
 
-  private String name = "";
+  private String name;
   private String type = "BaseGeometry";
 
   public BaseGeometry() {
     super();
   }
 
+    public BaseGeometry(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.name = (String) parameters.getOrDefault(NAME, (Serializable) this.name);
+      this.type = (String) parameters.getOrDefault(TYPE, (Serializable) this.type);
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
-    content.put(TYPE, type);
-    content.put(NAME, name);
+    content.put(NAME, (Serializable) name);
+    content.put(TYPE, (Serializable) type);
     return content;
   }
 

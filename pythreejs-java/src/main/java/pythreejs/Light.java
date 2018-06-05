@@ -1,12 +1,11 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.*;
 
-public abstract class Light extends Object3D {
-
-
+public class Light extends Object3D {
 
   public static final String MODEL_NAME_VALUE = "LightModel";
   public static final String COLOR = "color";
@@ -14,19 +13,26 @@ public abstract class Light extends Object3D {
   public static final String TYPE = "type";
 
   private String color = "#ffffff";
-  private Double intensity = null;;
+  private double intensity = 1;
   private String type = "Light";
 
   public Light() {
     super();
   }
 
+    public Light(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.color = (String) parameters.getOrDefault(COLOR, (Serializable) this.color);
+      this.intensity = (double) parameters.getOrDefault(INTENSITY, (Serializable) this.intensity);
+      this.type = (String) parameters.getOrDefault(TYPE, (Serializable) this.type);
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
-    content.put(COLOR, color);
-    content.put(INTENSITY, intensity);
-    content.put(TYPE, type);
+    content.put(COLOR, (Serializable) color);
+    content.put(INTENSITY, (Serializable) intensity);
+    content.put(TYPE, (Serializable) type);
     return content;
   }
 
@@ -42,10 +48,10 @@ public abstract class Light extends Object3D {
     sendUpdate(COLOR, color);
   }
 
-  public Double getIntensity() {
+  public double getIntensity() {
     return intensity;
   }
-  public void setIntensity(Double intensity){
+  public void setIntensity(double intensity){
     this.intensity = intensity;
     sendUpdate(INTENSITY, intensity);
   }

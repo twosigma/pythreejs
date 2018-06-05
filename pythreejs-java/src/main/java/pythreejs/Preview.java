@@ -1,87 +1,74 @@
-/*
- *  Copyright 2017 TWO SIGMA OPEN SOURCE, LLC
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *import static org.assertj.core.api.Assertions.assertThat;
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
 
 package pythreejs;
 
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.*;
 
-public class Preview extends RenderableWidget{
+public class Preview extends RenderableWidget {
 
+  public static final String _FLAT = "_flat";
+  public static final String MODEL_NAME_VALUE = "PreviewModel";
+  public static final String VIEW_NAME_VALUE = "PreviewView";
+  public static final String _WIRE = "_wire";
+  public static final String CHILD = "child";
 
-    private static final String VIEW_NAME_VALUE = "PreviewView";
-    private static final String MODEL_NAME_VALUE = "PreviewModel";
-    private static final String IPY_MODEL = "IPY_MODEL_";
-    private final String FLAT = "_flat";
-    private final String WIRE = "_wire";
-    private final String CHILD = "child";
+  private boolean flat;
+  private boolean wire;
+  private ThreeWidget child;
 
-    private boolean flat = false;
-    private boolean wire = false;
-    private ThreeWidget child;
+  public Preview() {
+    super();
+    openComm();
+  }
 
-    public Preview(ThreeWidget child) {
-        super();
-        this.child = child;
-        openComm();
+    public Preview(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.flat = (boolean) parameters.getOrDefault(_FLAT, (Serializable) this.flat);
+      this.wire = (boolean) parameters.getOrDefault(_WIRE, (Serializable) this.wire);
+      this.child = (ThreeWidget) parameters.getOrDefault(CHILD, (Serializable) this.child);
+      openComm();
     }
 
-    @Override
-    public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
-        super.content(content);
-        content.put(FLAT, flat);
-        content.put(WIRE, wire);
-        content.put(CHILD, this.child == null ? null : IPY_MODEL + this.child.getComm().getCommId());
-        return content;
-    }
+  @Override
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
+    super.content(content);
+    content.put(_FLAT, (Serializable) flat);
+    content.put(_WIRE, (Serializable) wire);
+    content.put(CHILD, child == null ? null : "IPY_MODEL_" + child.getComm().getCommId());
+    return content;
+  }
 
-    public String getModelNameValue(){
-        return MODEL_NAME_VALUE;
-    }
+  public boolean getFlat() {
+    return flat;
+  }
+  public void setFlat(boolean flat){
+    this.flat = flat;
+    sendUpdate(_FLAT, flat);
+  }
 
-    public String getViewNameValue(){
-        return VIEW_NAME_VALUE;
-    }
+  public String getModelNameValue(){
+    return MODEL_NAME_VALUE;
+  }
 
-    public boolean getFlat() {
-        return flat;
-    }
+  public String getViewNameValue(){
+    return VIEW_NAME_VALUE;
+  }
 
-    public void setFlat(boolean flat) {
-        this.flat = flat;
-        super.sendUpdate(FLAT, flat);
-    }
+  public boolean getWire() {
+    return wire;
+  }
+  public void setWire(boolean wire){
+    this.wire = wire;
+    sendUpdate(_WIRE, wire);
+  }
 
-    public boolean getWire() {
-        return wire;
-    }
-
-    public void setWire(boolean wire) {
-        this.wire = wire;
-        super.sendUpdate(WIRE, wire);
-    }
-
-    public ThreeWidget getChild() {
-        return child;
-    }
-
-    public void setChild(ThreeWidget child) {
-        this.child = child;
-        super.sendUpdate(CHILD, this.child.getComm().getCommId());
-    }
+  public ThreeWidget getChild() {
+    return child;
+  }
+  public void setChild(ThreeWidget child){
+    this.child = child;
+    sendUpdate(CHILD, child == null ? null : "IPY_MODEL_"+child.getComm().getCommId());
+  }
 
 }
-

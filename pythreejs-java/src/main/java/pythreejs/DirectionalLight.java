@@ -1,20 +1,19 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.*;
 
 public class DirectionalLight extends Light {
-
-
 
   public static final String MODEL_NAME_VALUE = "DirectionalLightModel";
   public static final String SHADOW = "shadow";
   public static final String TARGET = "target";
   public static final String TYPE = "type";
 
-  private Serializable shadow = "uninitialized";
-  private Serializable target = "uninitialized";
+  private String shadow = "uninitialized";
+  private String target = "uninitialized";
   private String type = "DirectionalLight";
 
   public DirectionalLight() {
@@ -22,12 +21,20 @@ public class DirectionalLight extends Light {
     openComm();
   }
 
+    public DirectionalLight(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.shadow = (String) parameters.getOrDefault(SHADOW, (Serializable) this.shadow);
+      this.target = (String) parameters.getOrDefault(TARGET, (Serializable) this.target);
+      this.type = (String) parameters.getOrDefault(TYPE, (Serializable) this.type);
+      openComm();
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
     content.put(SHADOW, shadow);
     content.put(TARGET, target);
-    content.put(TYPE, type);
+    content.put(TYPE, (Serializable) type);
     return content;
   }
 
@@ -35,23 +42,18 @@ public class DirectionalLight extends Light {
     return MODEL_NAME_VALUE;
   }
 
-  @Override
-  public String getViewNameValue() {
-    return null;
-  }
-
-  public Serializable getShadow() {
+  public String getShadow() {
     return shadow;
   }
-  public void setShadow(Serializable shadow){
+  public void setShadow(String shadow){
     this.shadow = shadow;
     sendUpdate(SHADOW, shadow);
   }
 
-  public Serializable getTarget() {
+  public String getTarget() {
     return target;
   }
-  public void setTarget(Serializable target){
+  public void setTarget(String target){
     this.target = target;
     sendUpdate(TARGET, target);
   }

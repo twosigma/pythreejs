@@ -1,8 +1,9 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.*;
 
 public class Scene extends Object3D {
 
@@ -13,10 +14,10 @@ public class Scene extends Object3D {
   public static final String OVERRIDEMATERIAL = "overrideMaterial";
   public static final String TYPE = "type";
 
-  private Boolean autoUpdate = true;
+  private boolean autoUpdate = true;
   private String background = "#ffffff";
-  private Serializable fog = null;
-  private Serializable overrideMaterial = null;
+  private Widget fog;
+  private Material overrideMaterial;
   private String type = "Scene";
 
   public Scene() {
@@ -24,14 +25,24 @@ public class Scene extends Object3D {
     openComm();
   }
 
+    public Scene(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.autoUpdate = (boolean) parameters.getOrDefault(AUTOUPDATE, (Serializable) this.autoUpdate);
+      this.background = (String) parameters.getOrDefault(BACKGROUND, (Serializable) this.background);
+      this.fog = (Widget) parameters.getOrDefault(FOG, (Serializable) this.fog);
+      this.overrideMaterial = (Material) parameters.getOrDefault(OVERRIDEMATERIAL, (Serializable) this.overrideMaterial);
+      this.type = (String) parameters.getOrDefault(TYPE, (Serializable) this.type);
+      openComm();
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
-    content.put(AUTOUPDATE, autoUpdate);
-    content.put(BACKGROUND, background);
-    content.put(FOG, fog);
-    content.put(OVERRIDEMATERIAL, overrideMaterial);
-    content.put(TYPE, type);
+    content.put(AUTOUPDATE, (Serializable) autoUpdate);
+    content.put(BACKGROUND, (Serializable) background);
+    content.put(FOG, fog == null ? null : "IPY_MODEL_" + fog.getComm().getCommId());
+    content.put(OVERRIDEMATERIAL, overrideMaterial == null ? null : "IPY_MODEL_" + overrideMaterial.getComm().getCommId());
+    content.put(TYPE, (Serializable) type);
     return content;
   }
 
@@ -39,15 +50,10 @@ public class Scene extends Object3D {
     return MODEL_NAME_VALUE;
   }
 
-  @Override
-  public String getViewNameValue() {
-    return null;
-  }
-
-  public Boolean getAutoUpdate() {
+  public boolean getAutoUpdate() {
     return autoUpdate;
   }
-  public void setAutoUpdate(Boolean autoUpdate){
+  public void setAutoUpdate(boolean autoUpdate){
     this.autoUpdate = autoUpdate;
     sendUpdate(AUTOUPDATE, autoUpdate);
   }
@@ -60,20 +66,20 @@ public class Scene extends Object3D {
     sendUpdate(BACKGROUND, background);
   }
 
-  public Serializable getFog() {
+  public Widget getFog() {
     return fog;
   }
-  public void setFog(Serializable fog){
+  public void setFog(Widget fog){
     this.fog = fog;
-    sendUpdate(FOG, fog);
+    sendUpdate(FOG, fog == null ? null : "IPY_MODEL_"+fog.getComm().getCommId());
   }
 
-  public Serializable getOverrideMaterial() {
+  public Material getOverrideMaterial() {
     return overrideMaterial;
   }
-  public void setOverrideMaterial(Serializable overrideMaterial){
+  public void setOverrideMaterial(Material overrideMaterial){
     this.overrideMaterial = overrideMaterial;
-    sendUpdate(OVERRIDEMATERIAL, overrideMaterial);
+    sendUpdate(OVERRIDEMATERIAL, overrideMaterial == null ? null : "IPY_MODEL_"+overrideMaterial.getComm().getCommId());
   }
 
   public String getType() {

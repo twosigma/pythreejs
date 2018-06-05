@@ -1,6 +1,7 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
 import java.util.*;
 
@@ -16,8 +17,14 @@ public class CubeTexture extends Texture {
     openComm();
   }
 
+    public CubeTexture(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.images = (List) parameters.getOrDefault(IMAGES, (Serializable) this.images);
+      openComm();
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
     content.put(IMAGES, (Serializable) images);
     return content;
@@ -25,11 +32,6 @@ public class CubeTexture extends Texture {
 
   public String getModelNameValue(){
     return MODEL_NAME_VALUE;
-  }
-
-  @Override
-  public String getViewNameValue() {
-    return null;
   }
 
   public List getImages() {

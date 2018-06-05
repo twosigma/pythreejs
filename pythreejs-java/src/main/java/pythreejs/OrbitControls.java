@@ -1,6 +1,7 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
 import java.util.*;
 
@@ -29,56 +30,83 @@ public class OrbitControls extends Controls {
   public static final String TARGET = "target";
   public static final String ZOOMSPEED = "zoomSpeed";
 
-  private Boolean autoRotate = false;
-  private Double autoRotateSpeed = 2.0;;
-  private Double dampingFactor = 0.25;;
-  private Boolean enableDamping = false;
-  private Boolean enableKeys = true;
-  private Boolean enablePan = true;
-  private Boolean enableRotate = true;
-  private Boolean enableZoom = true;
-  private Boolean enabled = true;
-  private Double keyPanSpeed = 7.0;;
-  private Double maxAzimuthAngle = Double.MAX_VALUE;;
-  private Double maxDistance = Double.MAX_VALUE;;
-  private Double maxPolarAngle = 3.141592653589793;;
-  private Double maxZoom = Double.MAX_VALUE;;
-  private Double minAzimuthAngle = Double.MIN_VALUE;;
-  private Double minDistance = 0.0;;
-  private Double minPolarAngle = 0.0;;
-  private Double minZoom = 0.0;;
-  private Double rotateSpeed = 1.0;;
+  private boolean autoRotate;
+  private double autoRotateSpeed = 2;
+  private double dampingFactor = 0.25;
+  private boolean enableDamping;
+  private boolean enableKeys = true;
+  private boolean enablePan = true;
+  private boolean enableRotate = true;
+  private boolean enableZoom = true;
+  private boolean enabled = true;
+  private double keyPanSpeed = 7;
+  private double maxAzimuthAngle = Double.MAX_VALUE;
+  private double maxDistance = Double.MAX_VALUE;
+  private double maxPolarAngle = 3.141592653589793;
+  private double maxZoom = Double.MAX_VALUE;
+  private double minAzimuthAngle = Double.MIN_VALUE;
+  private double minDistance = 0;
+  private double minPolarAngle = 0;
+  private double minZoom = 0;
+  private double rotateSpeed = 1;
   private List target = Arrays.asList(0, 0, 0);
-  private Double zoomSpeed = 1.0;;
+  private double zoomSpeed = 1;
 
-  public OrbitControls(Object3D object3D) {
-    super(object3D);
+  public OrbitControls() {
+    super();
     openComm();
   }
+
+    public OrbitControls(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.autoRotate = (boolean) parameters.getOrDefault(AUTOROTATE, (Serializable) this.autoRotate);
+      this.autoRotateSpeed = (double) parameters.getOrDefault(AUTOROTATESPEED, (Serializable) this.autoRotateSpeed);
+      this.dampingFactor = (double) parameters.getOrDefault(DAMPINGFACTOR, (Serializable) this.dampingFactor);
+      this.enableDamping = (boolean) parameters.getOrDefault(ENABLEDAMPING, (Serializable) this.enableDamping);
+      this.enableKeys = (boolean) parameters.getOrDefault(ENABLEKEYS, (Serializable) this.enableKeys);
+      this.enablePan = (boolean) parameters.getOrDefault(ENABLEPAN, (Serializable) this.enablePan);
+      this.enableRotate = (boolean) parameters.getOrDefault(ENABLEROTATE, (Serializable) this.enableRotate);
+      this.enableZoom = (boolean) parameters.getOrDefault(ENABLEZOOM, (Serializable) this.enableZoom);
+      this.enabled = (boolean) parameters.getOrDefault(ENABLED, (Serializable) this.enabled);
+      this.keyPanSpeed = (double) parameters.getOrDefault(KEYPANSPEED, (Serializable) this.keyPanSpeed);
+      this.maxAzimuthAngle = (double) parameters.getOrDefault(MAXAZIMUTHANGLE, (Serializable) this.maxAzimuthAngle);
+      this.maxDistance = (double) parameters.getOrDefault(MAXDISTANCE, (Serializable) this.maxDistance);
+      this.maxPolarAngle = (double) parameters.getOrDefault(MAXPOLARANGLE, (Serializable) this.maxPolarAngle);
+      this.maxZoom = (double) parameters.getOrDefault(MAXZOOM, (Serializable) this.maxZoom);
+      this.minAzimuthAngle = (double) parameters.getOrDefault(MINAZIMUTHANGLE, (Serializable) this.minAzimuthAngle);
+      this.minDistance = (double) parameters.getOrDefault(MINDISTANCE, (Serializable) this.minDistance);
+      this.minPolarAngle = (double) parameters.getOrDefault(MINPOLARANGLE, (Serializable) this.minPolarAngle);
+      this.minZoom = (double) parameters.getOrDefault(MINZOOM, (Serializable) this.minZoom);
+      this.rotateSpeed = (double) parameters.getOrDefault(ROTATESPEED, (Serializable) this.rotateSpeed);
+      this.target = (List) parameters.getOrDefault(TARGET, (Serializable) this.target);
+      this.zoomSpeed = (double) parameters.getOrDefault(ZOOMSPEED, (Serializable) this.zoomSpeed);
+      openComm();
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
-    content.put(AUTOROTATE, autoRotate);
-    content.put(AUTOROTATESPEED, autoRotateSpeed);
-    content.put(DAMPINGFACTOR, dampingFactor);
-    content.put(ENABLEDAMPING, enableDamping);
-    content.put(ENABLEKEYS, enableKeys);
-    content.put(ENABLEPAN, enablePan);
-    content.put(ENABLEROTATE, enableRotate);
-    content.put(ENABLEZOOM, enableZoom);
-    content.put(ENABLED, enabled);
-    content.put(KEYPANSPEED, keyPanSpeed);
-    content.put(MAXAZIMUTHANGLE, maxAzimuthAngle);
-    content.put(MAXDISTANCE, maxDistance);
-    content.put(MAXPOLARANGLE, maxPolarAngle);
-    content.put(MAXZOOM, maxZoom);
-    content.put(MINAZIMUTHANGLE, minAzimuthAngle);
-    content.put(MINDISTANCE, minDistance);
-    content.put(MINPOLARANGLE, minPolarAngle);
-    content.put(MINZOOM, minZoom);
-    content.put(ROTATESPEED, rotateSpeed);
+    content.put(AUTOROTATE, (Serializable) autoRotate);
+    content.put(AUTOROTATESPEED, (Serializable) autoRotateSpeed);
+    content.put(DAMPINGFACTOR, (Serializable) dampingFactor);
+    content.put(ENABLEDAMPING, (Serializable) enableDamping);
+    content.put(ENABLEKEYS, (Serializable) enableKeys);
+    content.put(ENABLEPAN, (Serializable) enablePan);
+    content.put(ENABLEROTATE, (Serializable) enableRotate);
+    content.put(ENABLEZOOM, (Serializable) enableZoom);
+    content.put(ENABLED, (Serializable) enabled);
+    content.put(KEYPANSPEED, (Serializable) keyPanSpeed);
+    content.put(MAXAZIMUTHANGLE, (Serializable) maxAzimuthAngle);
+    content.put(MAXDISTANCE, (Serializable) maxDistance);
+    content.put(MAXPOLARANGLE, (Serializable) maxPolarAngle);
+    content.put(MAXZOOM, (Serializable) maxZoom);
+    content.put(MINAZIMUTHANGLE, (Serializable) minAzimuthAngle);
+    content.put(MINDISTANCE, (Serializable) minDistance);
+    content.put(MINPOLARANGLE, (Serializable) minPolarAngle);
+    content.put(MINZOOM, (Serializable) minZoom);
+    content.put(ROTATESPEED, (Serializable) rotateSpeed);
     content.put(TARGET, (Serializable) target);
-    content.put(ZOOMSPEED, zoomSpeed);
+    content.put(ZOOMSPEED, (Serializable) zoomSpeed);
     return content;
   }
 
@@ -86,159 +114,154 @@ public class OrbitControls extends Controls {
     return MODEL_NAME_VALUE;
   }
 
-  @Override
-  public String getViewNameValue() {
-    return null;
-  }
-
-  public Boolean getAutoRotate() {
+  public boolean getAutoRotate() {
     return autoRotate;
   }
-  public void setAutoRotate(Boolean autoRotate){
+  public void setAutoRotate(boolean autoRotate){
     this.autoRotate = autoRotate;
     sendUpdate(AUTOROTATE, autoRotate);
   }
 
-  public Double getAutoRotateSpeed() {
+  public double getAutoRotateSpeed() {
     return autoRotateSpeed;
   }
-  public void setAutoRotateSpeed(Double autoRotateSpeed){
+  public void setAutoRotateSpeed(double autoRotateSpeed){
     this.autoRotateSpeed = autoRotateSpeed;
     sendUpdate(AUTOROTATESPEED, autoRotateSpeed);
   }
 
-  public Double getDampingFactor() {
+  public double getDampingFactor() {
     return dampingFactor;
   }
-  public void setDampingFactor(Double dampingFactor){
+  public void setDampingFactor(double dampingFactor){
     this.dampingFactor = dampingFactor;
     sendUpdate(DAMPINGFACTOR, dampingFactor);
   }
 
-  public Boolean getEnableDamping() {
+  public boolean getEnableDamping() {
     return enableDamping;
   }
-  public void setEnableDamping(Boolean enableDamping){
+  public void setEnableDamping(boolean enableDamping){
     this.enableDamping = enableDamping;
     sendUpdate(ENABLEDAMPING, enableDamping);
   }
 
-  public Boolean getEnableKeys() {
+  public boolean getEnableKeys() {
     return enableKeys;
   }
-  public void setEnableKeys(Boolean enableKeys){
+  public void setEnableKeys(boolean enableKeys){
     this.enableKeys = enableKeys;
     sendUpdate(ENABLEKEYS, enableKeys);
   }
 
-  public Boolean getEnablePan() {
+  public boolean getEnablePan() {
     return enablePan;
   }
-  public void setEnablePan(Boolean enablePan){
+  public void setEnablePan(boolean enablePan){
     this.enablePan = enablePan;
     sendUpdate(ENABLEPAN, enablePan);
   }
 
-  public Boolean getEnableRotate() {
+  public boolean getEnableRotate() {
     return enableRotate;
   }
-  public void setEnableRotate(Boolean enableRotate){
+  public void setEnableRotate(boolean enableRotate){
     this.enableRotate = enableRotate;
     sendUpdate(ENABLEROTATE, enableRotate);
   }
 
-  public Boolean getEnableZoom() {
+  public boolean getEnableZoom() {
     return enableZoom;
   }
-  public void setEnableZoom(Boolean enableZoom){
+  public void setEnableZoom(boolean enableZoom){
     this.enableZoom = enableZoom;
     sendUpdate(ENABLEZOOM, enableZoom);
   }
 
-  public Boolean getEnabled() {
+  public boolean getEnabled() {
     return enabled;
   }
-  public void setEnabled(Boolean enabled){
+  public void setEnabled(boolean enabled){
     this.enabled = enabled;
     sendUpdate(ENABLED, enabled);
   }
 
-  public Double getKeyPanSpeed() {
+  public double getKeyPanSpeed() {
     return keyPanSpeed;
   }
-  public void setKeyPanSpeed(Double keyPanSpeed){
+  public void setKeyPanSpeed(double keyPanSpeed){
     this.keyPanSpeed = keyPanSpeed;
     sendUpdate(KEYPANSPEED, keyPanSpeed);
   }
 
-  public Double getMaxAzimuthAngle() {
+  public double getMaxAzimuthAngle() {
     return maxAzimuthAngle;
   }
-  public void setMaxAzimuthAngle(Double maxAzimuthAngle){
+  public void setMaxAzimuthAngle(double maxAzimuthAngle){
     this.maxAzimuthAngle = maxAzimuthAngle;
     sendUpdate(MAXAZIMUTHANGLE, maxAzimuthAngle);
   }
 
-  public Double getMaxDistance() {
+  public double getMaxDistance() {
     return maxDistance;
   }
-  public void setMaxDistance(Double maxDistance){
+  public void setMaxDistance(double maxDistance){
     this.maxDistance = maxDistance;
     sendUpdate(MAXDISTANCE, maxDistance);
   }
 
-  public Double getMaxPolarAngle() {
+  public double getMaxPolarAngle() {
     return maxPolarAngle;
   }
-  public void setMaxPolarAngle(Double maxPolarAngle){
+  public void setMaxPolarAngle(double maxPolarAngle){
     this.maxPolarAngle = maxPolarAngle;
     sendUpdate(MAXPOLARANGLE, maxPolarAngle);
   }
 
-  public Double getMaxZoom() {
+  public double getMaxZoom() {
     return maxZoom;
   }
-  public void setMaxZoom(Double maxZoom){
+  public void setMaxZoom(double maxZoom){
     this.maxZoom = maxZoom;
     sendUpdate(MAXZOOM, maxZoom);
   }
 
-  public Double getMinAzimuthAngle() {
+  public double getMinAzimuthAngle() {
     return minAzimuthAngle;
   }
-  public void setMinAzimuthAngle(Double minAzimuthAngle){
+  public void setMinAzimuthAngle(double minAzimuthAngle){
     this.minAzimuthAngle = minAzimuthAngle;
     sendUpdate(MINAZIMUTHANGLE, minAzimuthAngle);
   }
 
-  public Double getMinDistance() {
+  public double getMinDistance() {
     return minDistance;
   }
-  public void setMinDistance(Double minDistance){
+  public void setMinDistance(double minDistance){
     this.minDistance = minDistance;
     sendUpdate(MINDISTANCE, minDistance);
   }
 
-  public Double getMinPolarAngle() {
+  public double getMinPolarAngle() {
     return minPolarAngle;
   }
-  public void setMinPolarAngle(Double minPolarAngle){
+  public void setMinPolarAngle(double minPolarAngle){
     this.minPolarAngle = minPolarAngle;
     sendUpdate(MINPOLARANGLE, minPolarAngle);
   }
 
-  public Double getMinZoom() {
+  public double getMinZoom() {
     return minZoom;
   }
-  public void setMinZoom(Double minZoom){
+  public void setMinZoom(double minZoom){
     this.minZoom = minZoom;
     sendUpdate(MINZOOM, minZoom);
   }
 
-  public Double getRotateSpeed() {
+  public double getRotateSpeed() {
     return rotateSpeed;
   }
-  public void setRotateSpeed(Double rotateSpeed){
+  public void setRotateSpeed(double rotateSpeed){
     this.rotateSpeed = rotateSpeed;
     sendUpdate(ROTATESPEED, rotateSpeed);
   }
@@ -251,10 +274,10 @@ public class OrbitControls extends Controls {
     sendUpdate(TARGET, target);
   }
 
-  public Double getZoomSpeed() {
+  public double getZoomSpeed() {
     return zoomSpeed;
   }
-  public void setZoomSpeed(Double zoomSpeed){
+  public void setZoomSpeed(double zoomSpeed){
     this.zoomSpeed = zoomSpeed;
     sendUpdate(ZOOMSPEED, zoomSpeed);
   }

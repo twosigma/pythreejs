@@ -1,28 +1,30 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.*;
 
-public abstract class Controls extends ThreeWidget {
-
-
+public class Controls extends ThreeWidget {
 
   public static final String MODEL_NAME_VALUE = "ControlsModel";
   public static final String CONTROLLING = "controlling";
-  private static final String IPY_MODEL = "IPY_MODEL_";
 
-  private Object3D controlling = null;
+  private Object3D controlling;
 
-  public Controls(Object3D controlling) {
+  public Controls() {
     super();
-    this.controlling = controlling;
   }
 
+    public Controls(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.controlling = (Object3D) parameters.getOrDefault(CONTROLLING, (Serializable) this.controlling);
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
-    content.put(CONTROLLING, IPY_MODEL + this.controlling.getComm().getCommId());
+    content.put(CONTROLLING, controlling == null ? null : "IPY_MODEL_" + controlling.getComm().getCommId());
     return content;
   }
 
@@ -35,7 +37,7 @@ public abstract class Controls extends ThreeWidget {
   }
   public void setControlling(Object3D controlling){
     this.controlling = controlling;
-    sendUpdate(CONTROLLING, IPY_MODEL + this.controlling.getComm().getCommId());
+    sendUpdate(CONTROLLING, controlling == null ? null : "IPY_MODEL_"+controlling.getComm().getCommId());
   }
 
 }

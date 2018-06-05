@@ -1,36 +1,58 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Renderer extends RenderableWidget {
 
   public static final String MODEL_NAME_VALUE = "RendererModel";
   public static final String VIEW_NAME_VALUE = "RendererView";
-  private static final String IPY_MODEL = "IPY_MODEL_";
   public static final String BACKGROUND = "background";
   public static final String BACKGROUND_OPACITY = "background_opacity";
   public static final String CAMERA = "camera";
   public static final String CONTROLS = "controls";
   public static final String SCENE = "scene";
-  public static final String TYPE = "type";
 
   private String background = "black";
-  private Double backgroundOpacity = null;;
-  private Camera camera = null;
-  private List<Controls> controls = new ArrayList<>();
-  private Scene scene = null;
-  private String type = "render";
+  private double backgroundOpacity = 1;
+  private Camera camera;
+  private List<Controls> controls = Arrays.asList();
+  private Scene scene;
 
-  public Renderer(Camera camera, Scene scene, List<Controls> controls) {
+  public Renderer() {
     super();
-    this.scene = scene;
-    this.controls = controls;
-    this.camera = camera;
     openComm();
+  }
+
+    public Renderer(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.background = (String) parameters.getOrDefault(BACKGROUND, (Serializable) this.background);
+      this.backgroundOpacity = (double) parameters.getOrDefault(BACKGROUND_OPACITY, (Serializable) this.backgroundOpacity);
+      this.camera = (Camera) parameters.getOrDefault(CAMERA, (Serializable) this.camera);
+      this.controls = (List) parameters.getOrDefault(CONTROLS, (Serializable) this.controls);
+      this.scene = (Scene) parameters.getOrDefault(SCENE, (Serializable) this.scene);
+      openComm();
+    }
+
+  private ArrayList<String> controlsIds() {
+    ArrayList<String> controlsIds = new ArrayList<>();
+    for (Controls control : controls) {
+      controlsIds.add("IPY_MODEL_" + control.getComm().getCommId());
+    }
+    return controlsIds;
+  }
+
+  @Override
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
+    super.content(content);
+    content.put(BACKGROUND, (Serializable) background);
+    content.put(BACKGROUND_OPACITY, (Serializable) backgroundOpacity);
+    content.put(CAMERA, camera == null ? null : "IPY_MODEL_" + camera.getComm().getCommId());
+    content.put(CONTROLS, controlsIds());
+    content.put(SCENE, scene == null ? null : "IPY_MODEL_" + scene.getComm().getCommId());
+    return content;
   }
 
   public String getModelNameValue(){
@@ -41,28 +63,6 @@ public class Renderer extends RenderableWidget {
     return VIEW_NAME_VALUE;
   }
 
-  @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
-    super.content(content);
-    content.put(SCENE, IPY_MODEL + this.scene.getComm().getCommId());
-    content.put(CAMERA, IPY_MODEL + this.camera.getComm().getCommId());
-    content.put(CONTROLS, controlsIds());
-    content.put(TYPE, type);
-    return content;
-  }
-
-  private Serializable controlsIds() {
-    ArrayList<String> controlIds = new ArrayList<>();
-    for (Controls control : controls) {
-      controlIds.add(IPY_MODEL + control.getComm().getCommId());
-    }
-    return controlIds;
-  }
-
-  private Serializable toJson(Object obj) {
-    return (Serializable) obj;
-  }
-
   public String getBackground() {
     return background;
   }
@@ -71,10 +71,10 @@ public class Renderer extends RenderableWidget {
     sendUpdate(BACKGROUND, background);
   }
 
-  public Double getBackgroundOpacity() {
+  public double getBackgroundOpacity() {
     return backgroundOpacity;
   }
-  public void setBackgroundOpacity(Double backgroundOpacity){
+  public void setBackgroundOpacity(double backgroundOpacity){
     this.backgroundOpacity = backgroundOpacity;
     sendUpdate(BACKGROUND_OPACITY, backgroundOpacity);
   }
@@ -84,13 +84,13 @@ public class Renderer extends RenderableWidget {
   }
   public void setCamera(Camera camera){
     this.camera = camera;
-    sendUpdate(CAMERA, camera.getComm().getCommId());
+    sendUpdate(CAMERA, camera == null ? null : "IPY_MODEL_"+camera.getComm().getCommId());
   }
 
-  public List<Controls> getControls() {
+  public List getControls() {
     return controls;
   }
-  public void setControls(List<Controls> controls){
+  public void setControls(List controls){
     this.controls = controls;
     sendUpdate(CONTROLS, controlsIds());
   }
@@ -100,7 +100,7 @@ public class Renderer extends RenderableWidget {
   }
   public void setScene(Scene scene){
     this.scene = scene;
-    sendUpdate(SCENE, scene.getComm().getCommId());
+    sendUpdate(SCENE, scene == null ? null : "IPY_MODEL_"+scene.getComm().getCommId());
   }
 
 }

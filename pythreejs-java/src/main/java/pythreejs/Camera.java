@@ -1,14 +1,11 @@
+
 package pythreejs;
 
-
+import com.twosigma.beakerx.widget.*;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
-public abstract class Camera extends Object3D {
-
-
+public class Camera extends Object3D {
 
   public static final String MODEL_NAME_VALUE = "CameraModel";
   public static final String MATRIXWORLDINVERSE = "matrixWorldInverse";
@@ -21,14 +18,23 @@ public abstract class Camera extends Object3D {
 
   public Camera() {
     super();
+    openComm();
   }
 
+    public Camera(LinkedHashMap<String, Serializable> parameters) {
+      super(parameters);
+      this.matrixWorldInverse = (List) parameters.getOrDefault(MATRIXWORLDINVERSE, (Serializable) this.matrixWorldInverse);
+      this.projectionMatrix = (List) parameters.getOrDefault(PROJECTIONMATRIX, (Serializable) this.projectionMatrix);
+      this.type = (String) parameters.getOrDefault(TYPE, (Serializable) this.type);
+      openComm();
+    }
+
   @Override
-  public HashMap<String, Serializable> content(HashMap<String, Serializable> content) {
+  public HashMap<String, Serializable> content (HashMap<String, Serializable> content) {
     super.content(content);
     content.put(MATRIXWORLDINVERSE, (Serializable) matrixWorldInverse);
     content.put(PROJECTIONMATRIX, (Serializable) projectionMatrix);
-    content.put(TYPE, type);
+    content.put(TYPE, (Serializable) type);
     return content;
   }
 
